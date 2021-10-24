@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+// 编译当前文档，使用命令：
+// protoc -I=$SRC_HOME --java_out=$DEST_DIR $SRC_DIR/addressbook.proto
+package tutorial;
+
+option java_multiple_files = true;
+option java_package = "com.yuwenyun.tools.protos";
+option java_outer_classname = "AddressBookProtos";
+
+// 字段命名一般以下划线连接的小写单词为准
+// 如：first_name
+message Person {
+  // '=1'标志字段顺序，不是赋值
+  optional string name = 1;
+  optional int32 id = 2;
+  optional string email = 3;
+
+  enum PhoneType {
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+
+  message PhoneNumber {
+    optional string number = 1;
+    optional PhoneType type = 2 [default = HOME];
+  }
+
+  // repeated关键字标志该类型为列表，即list<PhoneNumber>
+  repeated PhoneNumber phones = 4;
+}
+
+message AddressBook {
+  repeated Person people = 1;
+}
